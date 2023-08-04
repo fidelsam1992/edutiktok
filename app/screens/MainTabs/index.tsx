@@ -2,6 +2,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
   useWindowDimensions,
 } from 'react-native';
@@ -9,6 +10,8 @@ import React from 'react';
 import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import Following from '../Following';
 import ForYou from '../ForYou';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import Timer from '../../components/Timer';
 
 const MainTabs = () => {
   const layout = useWindowDimensions();
@@ -24,10 +27,14 @@ const MainTabs = () => {
       style={{
         position: 'absolute',
         flex: 1,
-        // backgroundColor: 'red',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         width: '100%',
         zIndex: 5,
+        marginHorizontal: 16,
       }}>
+      <Timer />
       <TabBar
         {...props}
         indicatorStyle={{
@@ -47,6 +54,9 @@ const MainTabs = () => {
           </Text>
         )}
       />
+      <TouchableOpacity style={{width: 50}} activeOpacity={0.8}>
+        <Icon name="search" color="white" size={16} />
+      </TouchableOpacity>
     </SafeAreaView>
   );
   return (
@@ -66,5 +76,3 @@ const renderScene = SceneMap({
 });
 
 export default MainTabs;
-
-const styles = StyleSheet.create({});
