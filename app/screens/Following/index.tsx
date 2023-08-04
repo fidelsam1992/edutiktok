@@ -1,7 +1,7 @@
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import VerticalViewPager from 'react-native-vertical-view-pager';
-import Page from '../../components/Page';
+import {Page} from '../../components';
 import {IPage} from '../../types/Page';
 import {getFollowingPost} from '../../api';
 const {height} = Dimensions.get('window');

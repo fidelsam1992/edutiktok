@@ -10,7 +10,7 @@ import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
 import Following from '../Following';
 import ForYou from '../ForYou';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import Timer from '../../components/Timer';
+import {Timer} from '../../components';
 
 const MainTabs = () => {
   const layout = useWindowDimensions();

@@ -7,6 +7,8 @@ import Animated, {
   FlipOutYLeft,
 } from 'react-native-reanimated';
 import RatingButton from './RatingButton';
+import {SIDE_BUTTONS_WIDTH, TAB_BAR_HEIGHT} from '../constants';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 const {width, height} = Dimensions.get('window');
 
 type FlashcardProps = {
@@ -15,7 +17,7 @@ type FlashcardProps = {
 };
 
 const Flashcard = ({page, answerVisible}: FlashcardProps) => {
-  // const insets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets();
   return (
     <View style={styles.page_container}>
       {/* Front */}
@@ -30,7 +32,7 @@ const Flashcard = ({page, answerVisible}: FlashcardProps) => {
       {/* Back */}
       {answerVisible && (
         <Animated.View
-          style={styles.back}
+          style={[styles.back, {marginTop: TAB_BAR_HEIGHT + insets.top}]}
           entering={FlipInYRight}
           exiting={FlipOutYLeft}>
           {/* Question */}
@@ -87,17 +89,15 @@ const styles = StyleSheet.create({
   front: {
     flex: 1,
     width: '100%',
-    // alignItems: 'flex',
     justifyContent: 'center',
     padding: 16,
-    paddingRight: 70,
+    paddingRight: SIDE_BUTTONS_WIDTH,
   },
   back: {
     flex: 1,
     width: '100%',
     padding: 16,
-    paddingRight: 70,
-    marginTop: 120,
+    paddingRight: SIDE_BUTTONS_WIDTH,
   },
   textAnswerTitle: {
     fontSize: 16,

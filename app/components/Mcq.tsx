@@ -10,13 +10,18 @@ import {IPage} from '../types/Page';
 import Option from './Option';
 import {revealAnswer} from '../api';
 import * as _ from 'lodash';
-import {PLAYLIST_HEIGHT} from '../constants';
+import {
+  PLAYLIST_HEIGHT,
+  SIDE_BUTTONS_WIDTH,
+  TAB_BAR_HEIGHT,
+} from '../constants';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 const {width, height} = Dimensions.get('window');
 
 const Mcq = ({page}: {page: IPage}) => {
   const [correctOptions, setCorrectOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
-
+  const insets = useSafeAreaInsets();
   const selectAnswer = answerId => {
     setSelectedOption(answerId);
     revealAnswer({questionId: `${page.id}`})
@@ -30,7 +35,11 @@ const Mcq = ({page}: {page: IPage}) => {
     <ImageBackground style={styles.imageBackground} source={{uri: page.image}}>
       <View style={styles.viewContent}>
         {/* Question */}
-        <View style={styles.viewQuestion}>
+        <View
+          style={[
+            styles.viewQuestion,
+            {marginTop: TAB_BAR_HEIGHT + insets.top},
+          ]}>
           <Text style={styles.textQuestion}>{page.question}</Text>
         </View>
         {/* Options */}
@@ -40,7 +49,6 @@ const Mcq = ({page}: {page: IPage}) => {
               isSelected={!!selectedOption}
               isCorrect={
                 correctOptions.length > 0 &&
-                // selectedOption === option.id &&
                 _.find(correctOptions, {id: option.id})
               }
               isWrong={
@@ -74,12 +82,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
     marginBottom: PLAYLIST_HEIGHT + 80,
-    paddingRight: 70,
+    paddingRight: SIDE_BUTTONS_WIDTH,
   },
   viewQuestion: {
     padding: 16,
     backgroundColor: 'rgba(0,0,0,0.7)',
-    marginTop: 120,
     marginHorizontal: 16,
     borderRadius: 8,
     alignSelf: 'flex-start',
