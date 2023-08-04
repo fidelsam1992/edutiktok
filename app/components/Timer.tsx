@@ -13,7 +13,7 @@ const Timer = () => {
     };
   }, []);
   return (
-    <View style={{width: 50, flexDirection: 'row'}}>
+    <View style={styles.viewTimer}>
       <Icon name="stopwatch" color="rgb(182	181	177	)" size={16} />
       <Text style={styles.textTimer}>{minutesSpent}m</Text>
     </View>
@@ -24,4 +24,5 @@ export default Timer;
 
 const styles = StyleSheet.create({
   textTimer: {color: 'rgb(182	181	177	)', marginLeft: 8},
+  viewTimer: {width: 50, flexDirection: 'row'},
 });

@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
   useWindowDimensions,
 } from 'react-native';
 import React from 'react';
@@ -23,38 +22,17 @@ const MainTabs = () => {
   ]);
 
   const renderTabBar = props => (
-    <SafeAreaView
-      style={{
-        position: 'absolute',
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-        zIndex: 5,
-        marginHorizontal: 16,
-      }}>
+    <SafeAreaView style={styles.viewSafe}>
       <Timer />
       <TabBar
         {...props}
-        indicatorStyle={{
-          backgroundColor: 'white',
-          height: 6,
-          borderRadius: 4,
-          // width: '20%',
-        }}
-        style={{
-          width: '60%',
-          alignSelf: 'center',
-          backgroundColor: 'transparent',
-        }}
-        renderLabel={({route, focused, color}) => (
-          <Text style={{margin: 8, color: 'white', fontSize: 15}}>
-            {route.title}
-          </Text>
+        indicatorStyle={styles.indicator}
+        style={styles.tabBar}
+        renderLabel={({route, color}) => (
+          <Text style={[styles.textRoute, {color: color}]}>{route.title}</Text>
         )}
       />
-      <TouchableOpacity style={{width: 50}} activeOpacity={0.8}>
+      <TouchableOpacity style={styles.search} activeOpacity={0.8}>
         <Icon name="search" color="white" size={16} />
       </TouchableOpacity>
     </SafeAreaView>
@@ -76,3 +54,28 @@ const renderScene = SceneMap({
 });
 
 export default MainTabs;
+
+const styles = StyleSheet.create({
+  viewSafe: {
+    position: 'absolute',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    zIndex: 5,
+    marginHorizontal: 16,
+  },
+  indicator: {
+    backgroundColor: 'white',
+    height: 6,
+    borderRadius: 4,
+  },
+  tabBar: {
+    width: '60%',
+    alignSelf: 'center',
+    backgroundColor: 'transparent',
+  },
+  search: {width: 50},
+  textRoute: {margin: 8, color: 'white', fontSize: 15},
+});

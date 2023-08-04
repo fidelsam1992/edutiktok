@@ -1,57 +1,34 @@
-import {StyleSheet} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import VerticalViewPager from 'react-native-vertical-view-pager';
 import Page from '../../components/Page';
 import {IPage} from '../../types/Page';
+import {getForYouPost} from '../../api';
+import {Dimensions} from 'react-native';
+const {height} = Dimensions.get('window');
 
 const ForYou = () => {
-  const [pages, setPages] = useState<IPage[]>([
-    {
-      type: 'flashcard',
-      id: 3047,
-      playlist: 'Period 5: 1844-1877',
-      flashcard_front: 'Manifest Destiny is the idea that the U.S. had',
-      flashcard_back:
-        "The idea that the United States was to possess the entire continent from the Atlantic Ocean to the Pacific Ocean and that this right was given to them by God. John O'Sullivan was the first to coin this term describing westward expansion.",
-      description: 'Topic 5.2: Manifest Destiny #apush',
-      user: {
-        name: 'AP US History',
-        avatar:
-          'https://cross-platform-rwa.rp.devfactory.com/avatars/apush.png',
-      },
-    },
-    {
-      type: 'flashcard',
-      id: 3047,
-      playlist: 'Period 5: 1844-1877',
-      flashcard_front: 'Manifest Destiny is the idea that the U.S. had',
-      flashcard_back:
-        "The idea that the United States was to possess the entire continent from the Atlantic Ocean to the Pacific Ocean and that this right was given to them by God. John O'Sullivan was the first to coin this term describing westward expansion.",
-      description: 'Topic 5.2: Manifest Destiny #apush',
-      user: {
-        name: 'AP US History',
-        avatar:
-          'https://cross-platform-rwa.rp.devfactory.com/avatars/apush.png',
-      },
-    },
-    {
-      type: 'flashcard',
-      id: 3047,
-      playlist: 'Period 5: 1844-1877',
-      flashcard_front: 'Manifest Destiny is the idea that the U.S. had',
-      flashcard_back:
-        "The idea that the United States was to possess the entire continent from the Atlantic Ocean to the Pacific Ocean and that this right was given to them by God. John O'Sullivan was the first to coin this term describing westward expansion.",
-      description: 'Topic 5.2: Manifest Destiny #apush',
-      user: {
-        name: 'AP US History',
-        avatar:
-          'https://cross-platform-rwa.rp.devfactory.com/avatars/apush.png',
-      },
-    },
-  ]);
+  const [pages, setPages] = useState<IPage[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  useEffect(() => {
+    if (currentIndex > pages.length - 2) {
+      getForYouPost()
+        .then(response => response.json())
+        .then(responseJson => {
+          setPages(old => [...old, responseJson]);
+        });
+    }
+  }, [currentIndex, pages]);
+
+  const onScroll = event => {
+    const index = event.nativeEvent.contentOffset.y / height;
+    console.log(index);
+    setCurrentIndex(index);
+  };
 
   return (
-    <VerticalViewPager showsVerticalScrollIndicator={false}>
+    <VerticalViewPager
+      showsVerticalScrollIndicator={false}
+      onMomentumScrollEnd={onScroll}>
       {pages.map((page, index) => (
         <Page key={index} page={page} />
       ))}
