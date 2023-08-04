@@ -1,0 +1,117 @@
+diff --git a/node_modules/react-native-vertical-view-pager/src/component/VerticalViewPager.js b/node_modules/react-native-vertical-view-pager/src/component/VerticalViewPager.js
+index 7463036..80aea29 100644
+--- a/node_modules/react-native-vertical-view-pager/src/component/VerticalViewPager.js
++++ b/node_modules/react-native-vertical-view-pager/src/component/VerticalViewPager.js
+@@ -1,5 +1,5 @@
+ import _ from 'lodash';
+-import React, {Component} from 'react';
++import React, { Component } from 'react';
+ import {
+     ScrollView
+ } from 'react-native';
+@@ -30,8 +30,8 @@ class VerticalViewPager extends Component {
+         };
+     }
+ 
+-    scrollTo({x, y, animated}) {
+-        this.scrollview.scrollTo({x, y, animated});
++    scrollTo({ x, y, animated }) {
++        this.scrollview.scrollTo({ x, y, animated });
+         this._contentOffset = {
+             x: 0,
+             y
+@@ -57,11 +57,11 @@ class VerticalViewPager extends Component {
+ 
+     nextPage() {
+         // calculate next y offset value
+-        const {height} = this._layout;
+-        const {y: startY} = this._startContentOffset;
++        const { height } = this._layout;
++        const { y: startY } = this._startContentOffset;
+         const nextYOffset = startY + height;
+         // scrollTo that point
+-        this.scrollTo({y: nextYOffset, animated: true});
++        this.scrollTo({ y: nextYOffset, animated: true });
+         this.setState({
+             scrollEnabled: false
+         });
+@@ -69,11 +69,11 @@ class VerticalViewPager extends Component {
+ 
+     prevPage() {
+         // calcullate prev page's y offset value
+-        const {height} = this._layout;
+-        const {y: startY} = this._startContentOffset;
++        const { height } = this._layout;
++        const { y: startY } = this._startContentOffset;
+         const nextYOffset = startY - height;
+         // scrollTo that point
+-        this.scrollTo({y: nextYOffset, animated: true});
++        this.scrollTo({ y: nextYOffset, animated: true });
+         this.setState({
+             scrollEnabled: false
+         });
+@@ -83,6 +83,7 @@ class VerticalViewPager extends Component {
+         if (!this._scrolling) {
+             this._startEnableScrollTimer();
+         }
++        _.invoke(this.props, 'onScroll', e);
+     }
+ 
+     _setStartOffset(startOffset) {
+@@ -95,9 +96,9 @@ class VerticalViewPager extends Component {
+     }
+ 
+     _calculateOffsets() {
+-        const {height} = this._layout;
+-        const {y: startY} = this._startContentOffset;
+-        const {y: endY} = this._endContentOffset;
++        const { height } = this._layout;
++        const { y: startY } = this._startContentOffset;
++        const { y: endY } = this._endContentOffset;
+         if ((endY - startY) > height * SCROLL_THRESHOLD) {
+             this.nextPage();
+         }
+@@ -105,7 +106,7 @@ class VerticalViewPager extends Component {
+             this.prevPage();
+         }
+         else {
+-            this.scrollTo({y: startY});
++            this.scrollTo({ y: startY });
+         }
+     }
+ 
+@@ -118,10 +119,12 @@ class VerticalViewPager extends Component {
+     }
+ 
+     onMomentumScrollEnd(e) {
+-      // Because onMomentumScrollEnd event is already be replace by onScroll event
+-      // that will event onMomentumScrollEnd if necassary.
+-      // Here define this event callback only avoid user to listen onMomentumScrollEnd
+-      // of native ScrollView that may cause troubles.
++        // Because onMomentumScrollEnd event is already be replace by onScroll event
++        // that will event onMomentumScrollEnd if necassary.
++        // Here define this event callback only avoid user to listen onMomentumScrollEnd
++        // of native ScrollView that may cause troubles.
++        _.invoke(this.props, 'onMomentumScrollEnd', e);
++
+     }
+ 
+     _startEnableScrollTimer() {
+@@ -142,13 +145,13 @@ class VerticalViewPager extends Component {
+     }
+ 
+     componentWillReceiveProps(nextProps) {
+-        const {contentOffset} = this.props;
+-        const {contentOffset: nextContentOffset} = nextProps;
++        const { contentOffset } = this.props;
++        const { contentOffset: nextContentOffset } = nextProps;
+         if (contentOffset != nextContentOffset) {
+             // contentOffset is iOS only attribute in ScrollView. Use scrollTo to mimic this bahavior in Android.
+             // XXX If update swiper children and also change contentOffset, scrollTo will not work. Don't know why...
+-            setTimeout(function() {
+-              this.scrollTo({...nextContentOffset, animated: true});
++            setTimeout(function () {
++                this.scrollTo({ ...nextContentOffset, animated: true });
+             }.bind(this), 25)
+         }
+     }

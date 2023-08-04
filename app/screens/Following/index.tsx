@@ -21,7 +21,6 @@ const Following = () => {
 
   const onScroll = event => {
     const index = event.nativeEvent.contentOffset.y / height;
-    console.log(index);
     setCurrentIndex(index);
   };
 
